@@ -15,7 +15,7 @@ const cardStyles = StyleSheet.create({
 const cardHeaderStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'space-between',
+    alignItems: 'stretch',
     flexGrow: 1,
     paddingBottom: 2 * theme.spacing,
   },
@@ -30,7 +30,7 @@ const cardHeaderStyles = StyleSheet.create({
   },
   infoContainer: {
     flexGrow: 1,
-    width: '90%',
+    width: '80%',
   },
   infoItem: {
     paddingBottom: theme.spacing / 2,
@@ -38,9 +38,9 @@ const cardHeaderStyles = StyleSheet.create({
   language: {
     backgroundColor: theme.colors.primary,
     color: theme.colors.white,
-    display: 'inline-flex',
-    borderRadius: 5,
-    padding: theme.spacing
+    alignSelf: 'flex-start',
+    padding: theme.spacing,
+    borderRadius: 5
   }
 });
 
@@ -53,7 +53,7 @@ const CardHeader = ({imageUrl, fullName, description, language} ) => {
       <View style={cardHeaderStyles.infoContainer}>
         <Text fontWeight="bold" fontSize="subheading" style={cardHeaderStyles.infoItem}>{fullName}</Text>
         <Text color="textSecondary" style={cardHeaderStyles.infoItem}>{description}</Text>
-        <Text><Text style={cardHeaderStyles.language}>{language}</Text></Text>
+        <Text style={cardHeaderStyles.language}>{language}</Text>
       </View>
     </View>
   );
@@ -67,6 +67,7 @@ const cardContentStyles = StyleSheet.create({
   },
   box: {
     flexGrow: 0,
+    alignItems: 'center',
   },
 });
 
@@ -81,18 +82,18 @@ const CardContentBox = ({ primaryText, secondaryText } ) => {
         {secondaryText}
       </Text>
     </View>
-  )
+  );
+};
+
+const checkThousands = (number) => {
+  if (number < 1000) return number;
+  number /= 1000;
+  return `${+number.toFixed(1)}k`;
 };
 
 const CardContent = ({stars, forks, reviews, ratings}) => {
-  if (stars > 1000) {
-    stars = stars / 1000
-    stars = `${stars.toFixed(1)}k`
-  }
-  if (forks > 1000) {
-    forks = forks / 1000
-    forks = `${forks.toFixed(1)}k`
-  }
+  stars = checkThousands(stars);
+  forks = checkThousands(forks);
   return (
     <View style={cardContentStyles.container}>
       <CardContentBox primaryText={stars} secondaryText="Stars" />
@@ -112,6 +113,6 @@ const RepositoryItem = ({item}) => {
     <CardContent stars={stargazersCount} forks={forksCount} reviews={reviewCount} ratings={ratingAverage} />
   </View>
 );
-}
+};
 
 export default RepositoryItem;

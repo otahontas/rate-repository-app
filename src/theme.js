@@ -1,26 +1,26 @@
 import { Platform } from 'react-native';
 
 const theme = {
-  roundness: 5,
+  roundness: 3,
   colors: {
     textPrimary: '#24292e',
     textSecondary: '#586069',
     primary: '#0366d6',
     appBarBackground: '#24292e',
     mainBackground: '#e1e4e8',
+    error: '#d73a4a',
+    divider: '#d1d5da',
     white: '#ffffff',
-    error: '#d73a4a'
-
   },
-  spacing: 8,
   fontSizes: {
     body: 14,
     subheading: 16,
   },
+  spacing: 5,
   fonts: {
     main: Platform.select({
-      android: 'Roboto',
       ios: 'Arial',
+      android: 'Roboto',
       default: 'System',
     }),
   },
@@ -31,3 +31,4 @@ const theme = {
 };
 
 export default theme;
+

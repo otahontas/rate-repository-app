@@ -1,118 +1,121 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import Text from './Text';
+import { View, Image, StyleSheet } from 'react-native';
+
 import theme from '../theme';
+import Text from './Text';
+import formatInThousands from '../utils/formatInThousands';
 
-const cardStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    padding: 4 * theme.spacing,
-    backgroundColor: theme.colors.white,
+    backgroundColor: 'white',
+    padding: 15,
   },
-});
-
-const cardHeaderStyles = StyleSheet.create({
-  container: {
+  topContainer: {
     flexDirection: 'row',
-    alignItems: 'stretch',
+    marginBottom: 15,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  avatarContainer: {
+    flexGrow: 0,
+    marginRight: 20,
+  },
+  contentContainer: {
     flexGrow: 1,
-    paddingBottom: 2 * theme.spacing,
+    flexShrink: 1,
+  },
+  nameText: {
+    marginBottom: 5,
+  },
+  descriptionText: {
+    flexGrow: 1,
   },
   avatar: {
     width: 45,
     height: 45,
-    borderRadius: 5,
+    borderRadius: theme.roundness,
   },
-  avatarContainer: {
-    flexGrow: 0,
-    paddingRight: 2 * theme.spacing,
-  },
-  infoContainer: {
-    flexGrow: 1,
-    width: '80%',
-  },
-  infoItem: {
-    paddingBottom: theme.spacing / 2,
-  },
-  language: {
-    backgroundColor: theme.colors.primary,
-    color: theme.colors.white,
-    alignSelf: 'flex-start',
-    padding: theme.spacing,
-    borderRadius: 5
-  }
-});
-
-const CardHeader = ({imageUrl, fullName, description, language} ) => {
-  return (
-    <View style={cardHeaderStyles.container}>
-      <View style={cardHeaderStyles.avatarContainer}>
-        <Image style={cardHeaderStyles.avatar} source={imageUrl} />
-      </View>
-      <View style={cardHeaderStyles.infoContainer}>
-        <Text fontWeight="bold" fontSize="subheading" style={cardHeaderStyles.infoItem}>{fullName}</Text>
-        <Text color="textSecondary" style={cardHeaderStyles.infoItem}>{description}</Text>
-        <Text style={cardHeaderStyles.language}>{language}</Text>
-      </View>
-    </View>
-  );
-};
-
-const cardContentStyles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexGrow: 1,
-    justifyContent: 'space-around',
-  },
-  box: {
+  countItem: {
     flexGrow: 0,
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15,
+  },
+  countItemCount: {
+    marginBottom: 5,
+  },
+  languageContainer: {
+    marginTop: 10,
+    flexDirection: 'row',
+  },
+  languageText: {
+    color: 'white',
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.roundness,
+    flexGrow: 0,
+    paddingVertical: 3,
+    paddingHorizontal: 6,
   },
 });
 
-
-const CardContentBox = ({ primaryText, secondaryText } ) => {
+const CountItem = ({ label, count }) => {
   return (
-    <View style={cardContentStyles.box}>
-      <Text fontWeight="bold" style={cardContentStyles.actionText}>
-        {primaryText}
+    <View style={styles.countItem}>
+      <Text style={styles.countItemCount} fontWeight="bold">
+        {formatInThousands(count)}
       </Text>
-      <Text color="textSecondary" style={cardContentStyles.actionText}>
-        {secondaryText}
-      </Text>
+      <Text color="textSecondary">{label}</Text>
     </View>
   );
 };
 
-const checkThousands = (number) => {
-  if (number < 1000) return number;
-  number /= 1000;
-  return `${+number.toFixed(1)}k`;
-};
+const RepositoryItem = ({ repository }) => {
+  const {
+    fullName,
+    description,
+    language,
+    forksCount,
+    stargazersCount,
+    ratingAverage,
+    reviewCount,
+    ownerAvatarUrl,
+  } = repository;
 
-const CardContent = ({stars, forks, reviews, ratings}) => {
-  stars = checkThousands(stars);
-  forks = checkThousands(forks);
   return (
-    <View style={cardContentStyles.container}>
-      <CardContentBox primaryText={stars} secondaryText="Stars" />
-      <CardContentBox primaryText={forks} secondaryText="Forks" />
-      <CardContentBox primaryText={reviews} secondaryText="Reviews" />
-      <CardContentBox primaryText={ratings} secondaryText="Rating" />
+    <View style={styles.container}>
+      <View style={styles.topContainer}>
+        <View style={styles.avatarContainer}>
+          <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+        </View>
+        <View style={styles.contentContainer}>
+          <Text
+            style={styles.nameText}
+            fontWeight="bold"
+            fontSize="subheading"
+            numberOfLines={1}
+          >
+            {fullName}
+          </Text>
+          <Text style={styles.descriptionText} color="textSecondary">
+            {description}
+          </Text>
+          {language ? (
+            <View style={styles.languageContainer}>
+              <Text style={styles.languageText}>{language}</Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
+      <View style={styles.bottomContainer}>
+        <CountItem count={stargazersCount} label="Stars" />
+        <CountItem count={forksCount} label="Forks" />
+        <CountItem count={reviewCount} label="Reviews" />
+        <CountItem count={ratingAverage} label="Rating" />
+      </View>
     </View>
   );
-};
-
-
-const RepositoryItem = ({item}) => {
-  const { fullName, description, language, stargazersCount, forksCount, reviewCount, ratingAverage, ownerAvatarUrl } = item;
-  return (
-  <View style={cardStyles.container}>
-    <CardHeader imageUrl={ownerAvatarUrl} fullName={fullName} description={description} language={language} />
-    <CardContent stars={stargazersCount} forks={forksCount} reviews={reviewCount} ratings={ratingAverage} />
-  </View>
-);
 };
 
 export default RepositoryItem;

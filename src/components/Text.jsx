@@ -10,9 +10,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.main,
     fontWeight: theme.fontWeights.normal,
   },
-  colorWhite: {
-    color: theme.colors.white,
-  },
   colorTextSecondary: {
     color: theme.colors.textSecondary,
   },
@@ -32,13 +29,14 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     styles.text,
     color === 'textSecondary' && styles.colorTextSecondary,
     color === 'primary' && styles.colorPrimary,
-    color === 'white' && styles.colorWhite,
     fontSize === 'subheading' && styles.fontSizeSubheading,
     fontWeight === 'bold' && styles.fontWeightBold,
     style,
   ];
 
-  return <NativeText style={textStyle} {...props} />;
+  return (
+    <NativeText style={textStyle} {...props} />
+  );
 };
 
 export default Text;

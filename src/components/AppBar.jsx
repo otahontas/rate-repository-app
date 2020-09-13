@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Constants from 'expo-constants';
 import { Link, useHistory } from 'react-router-native';
 import { useContext } from 'react';
@@ -33,40 +33,43 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppBarTab = ({ linkLocation, linkText }) => {
+const AppBarTab = ({ children, ...props }) => {
   return (
-    <Link to={linkLocation} style={styles.tabContainer}>
-      <Text fontWeight='bold' style={styles.tabText}>{linkText}</Text>
-    </Link>
-  );
-};
-
-const SignOutTab = () => {
-  const apolloClient = useApolloClient();
-  const authStorage = useContext(AuthStorageContext);
-  const history = useHistory();
-  const signOut = () => {
-    authStorage.removeAccessToken();
-    apolloClient.resetStore();
-    history.push('/');
-  };
-  return (
-    <TouchableHighlight style={styles.tabContainer} onPress={signOut}>
-      <Text fontWeight='bold' style={styles.tabText}>Sign out</Text>
-    </TouchableHighlight>
+    <TouchableWithoutFeedback style={styles.tabTouchable} {...props}>
+      <View style={styles.tabContainer}>
+        <Text fontWeight="bold" style={styles.tabText}>
+          {children}
+        </Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const AppBar = () => {
+  const apolloClient = useApolloClient();
+  const authStorage = useContext(AuthStorageContext);
+  const history = useHistory();
   const { authorizedUser } = useAuthorizedUser();
+
+  const onSignOut = async () => {
+    await authStorage.removeAccessToken();
+    apolloClient.resetStore();
+    history.push('/');
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} horizontal>
-        <AppBarTab linkLocation="/" linkText="Repositories" />
-        {authorizedUser 
-          ? <SignOutTab />
-          : <AppBarTab linkLocation="/sign-in" linkText="Sign in" />
-        }
+        <Link to="/" component={AppBarTab}>
+          Repositories
+        </Link>
+        {authorizedUser ? (
+          <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
+        ) : (
+          <Link to="/sign-in" component={AppBarTab}>
+            Sign in
+          </Link>
+        )}
       </ScrollView>
     </View>
   );

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 const CountItem = ({ label, count }) => {
   return (
     <View style={styles.countItem}>
-      <Text style={styles.countItemCount} fontWeight="bold">
+      <Text style={styles.countItemCount} testID={label} fontWeight="bold">
         {formatInThousands(count)}
       </Text>
       <Text color="textSecondary">{label}</Text>
@@ -95,15 +95,25 @@ const RepositoryItem = ({ repository }) => {
             fontWeight="bold"
             fontSize="subheading"
             numberOfLines={1}
+            testID="fullName"
           >
             {fullName}
           </Text>
-          <Text style={styles.descriptionText} color="textSecondary">
+          <Text 
+            style={styles.descriptionText}
+            color="textSecondary"
+            testID="description"
+          >
             {description}
           </Text>
           {language ? (
             <View style={styles.languageContainer}>
-              <Text style={styles.languageText}>{language}</Text>
+              <Text 
+                style={styles.languageText}
+                testID="language"
+              >
+                {language}
+              </Text>
             </View>
           ) : null}
         </View>

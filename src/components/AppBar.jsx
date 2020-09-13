@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableHighlight } from 'react-native';
 import Constants from 'expo-constants';
-import { Link } from 'react-router-native';
+import { Link, useHistory } from 'react-router-native';
+import { useContext } from 'react';
+import { useApolloClient } from '@apollo/client';
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 import theme from '../theme';
 import Text from './Text';
+import useAuthorizedUser from '../hooks/useAuthorizedUser';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,12 +41,32 @@ const AppBarTab = ({ linkLocation, linkText }) => {
   );
 };
 
+const SignOutTab = () => {
+  const apolloClient = useApolloClient();
+  const authStorage = useContext(AuthStorageContext);
+  const history = useHistory();
+  const signOut = () => {
+    authStorage.removeAccessToken();
+    apolloClient.resetStore();
+    history.push('/');
+  };
+  return (
+    <TouchableHighlight style={styles.tabContainer} onPress={signOut}>
+      <Text fontWeight='bold' style={styles.tabText}>Sign out</Text>
+    </TouchableHighlight>
+  );
+};
+
 const AppBar = () => {
+  const { authorizedUser } = useAuthorizedUser();
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} horizontal>
         <AppBarTab linkLocation="/" linkText="Repositories" />
-        <AppBarTab linkLocation="/sign-in" linkText="Sign in" />
+        {authorizedUser 
+          ? <SignOutTab />
+          : <AppBarTab linkLocation="/sign-in" linkText="Sign in" />
+        }
       </ScrollView>
     </View>
   );

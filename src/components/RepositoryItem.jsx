@@ -87,6 +87,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 export const SingleRepositoryView = () => {
   const { id } = useParams();
   const { repository } = useRepository(id);
+  console.log(repository)
   const reviewNodes = repository?.reviews?.edges
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];

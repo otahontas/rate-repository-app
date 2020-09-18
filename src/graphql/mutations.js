@@ -14,3 +14,11 @@ export const AUTHORIZE = gql`
 
   ${USER_BASE_FIELDS}
 `;
+
+export const CREATE_REVIEW = gql`
+  mutation createReview($review: CreateReviewInput!) {
+    createReview(review: $review) {
+      repositoryId
+    }
+  }
+`;

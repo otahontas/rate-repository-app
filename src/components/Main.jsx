@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-native';
 import { SingleRepositoryView } from "./RepositoryItem";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
+import NewReview from "./NewReview";
 import AppBar from "./AppBar";
 
 import theme from "../theme";
@@ -23,6 +24,9 @@ const Main = () => {
       <Switch>
         <Route path="/repositories/:id" exact> 
           <SingleRepositoryView />
+        </Route>
+        <Route path="/new-review" exact> 
+          <NewReview />
         </Route>
         <Route path="/sign-in" exact> 
           <SignIn />

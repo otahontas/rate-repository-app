@@ -3,14 +3,21 @@ import { gql } from 'apollo-boost';
 import { REPOSITORY_BASE_FIELDS, USER_BASE_FIELDS } from './fragments';
 
 export const GET_REPOSITORIES = gql`
-  query {
-    repositories {
+  query repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $first: Int, $after: String) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection, first: $first, after: $after) {
       edges {
         node {
           ...RepositoryBaseFields
           ratingAverage
           reviewCount
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        totalCount
+        hasNextPage
       }
     }
   }
@@ -19,12 +26,12 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const GET_REPOSITORY = gql`
-  query repository($id: ID!) {
+  query repository($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       ...RepositoryBaseFields
       ratingAverage
       reviewCount
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
           node {
             id
@@ -36,6 +43,13 @@ export const GET_REPOSITORY = gql`
               username
             }
           }
+          cursor
+        }
+        pageInfo {
+          endCursor
+          startCursor
+          totalCount
+          hasNextPage
         }
       }
     }

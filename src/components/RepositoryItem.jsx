@@ -86,13 +86,18 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 export const SingleRepositoryView = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
+  const { repository, fetchMore } = useRepository(id, 5);
   const reviewNodes = repository?.reviews?.edges
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (<FlatList
             data={reviewNodes}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
             ItemSeparatorComponent={ItemSeparator}
             renderItem = {({ item }) => <ReviewItem review={item} />}
             keyExtractor={({ id }) => id}

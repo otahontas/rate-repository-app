@@ -87,7 +87,6 @@ const ItemSeparator = () => <View style={styles.separator} />;
 export const SingleRepositoryView = () => {
   const { id } = useParams();
   const { repository } = useRepository(id);
-  console.log(repository)
   const reviewNodes = repository?.reviews?.edges
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
@@ -158,8 +157,8 @@ const RepositoryItem = ({ repository, isHeader, githubUrl }) => {
     ownerAvatarUrl,
   } = repository;
 
-  const extrastyle = isHeader ? styles.headerContainer : null;
-  const style = {...styles.container, ...extrastyle}
+  const headerContainerStyle = isHeader ? styles.headerContainer : null;
+  const style = {...styles.container, ...headerContainerStyle}
 
   return (
     <View style={style}>

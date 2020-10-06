@@ -1,8 +1,9 @@
 import React from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import {useHistory} from 'react-router-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 const styles = StyleSheet.create({
   separator: {
@@ -31,6 +32,7 @@ export const RepositoryListContainer = ({ repositories }) => {
   return (
     <FlatList
       data={repositoryNodes}
+      ListHeaderComponent={() => <RepositoryOrderSelection />}
       ItemSeparatorComponent={ItemSeparator}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
@@ -41,6 +43,19 @@ export const RepositoryListContainer = ({ repositories }) => {
     />
   );
 };
+
+const RepositoryOrderSelection = () => {
+  return (
+   <RNPickerSelect
+            onValueChange={(value) => console.log(value)}
+            items={[
+                { label: 'Football', value: 'football' },
+                { label: 'Baseball', value: 'baseball' },
+                { label: 'Hockey', value: 'hockey' },
+            ]}
+    />
+  )
+}
 
 const RepositoryList = () => {
   const { repositories } = useRepositories();

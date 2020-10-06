@@ -24,7 +24,7 @@ const useRepositories = (sortMode, first) => {
       orderDirection = "DESC";
       break;
   }
-  const variables = { orderBy, orderDirection, first }
+  const variables = { orderBy, orderDirection, first };
 
   const { data, fetchMore, loading, ...result } = useQuery(
     GET_REPOSITORIES,

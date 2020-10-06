@@ -68,6 +68,9 @@ const AppBar = () => {
             <Link to="/new-review" component={AppBarTab}>
               Create a review
             </Link>
+            <Link to="/my-reviews" component={AppBarTab}>
+              My reviews
+            </Link>
             <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
           </>
         ) : (

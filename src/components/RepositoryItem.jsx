@@ -135,8 +135,8 @@ const ReviewItem = ({ review }) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 
 const CountItem = ({ label, count }) => {
@@ -163,7 +163,7 @@ const RepositoryItem = ({ repository, isHeader, githubUrl }) => {
   } = repository;
 
   const headerContainerStyle = isHeader ? styles.headerContainer : null;
-  const style = {...styles.container, ...headerContainerStyle}
+  const style = {...styles.container, ...headerContainerStyle};
 
   return (
     <View style={style}>

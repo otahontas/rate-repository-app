@@ -8,7 +8,7 @@ const useCreateUser = () => {
 
   const createUser = async ({username, password}) => {
     const { newUserData } = await mutate({ variables: { user: { username, password} }});
-    console.log(`Created user with ${newUserData}, logging in`)
+    console.log(`Created user with ${newUserData}, logging in`);
     return await signIn({username, password});
   };
 

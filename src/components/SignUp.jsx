@@ -84,7 +84,7 @@ const SignUp = () => {
 
     try {
       const { data } = await createUser({ username, password });
-      console.log(`Succesfully created and logged in user with ${data}`)
+      console.log(`Succesfully created and logged in user with ${data}`);
       history.push('/');
     } catch (e) {
       console.log(e);

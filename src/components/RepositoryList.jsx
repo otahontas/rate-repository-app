@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 import { useHistory } from 'react-router-native';
@@ -22,8 +22,8 @@ const TouchableRepositoryLink = ({ id, children }) => {
     >
       {children}
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -54,7 +54,7 @@ const RepositoryOrderSelection = ({ sortMode, setSortMode }) => {
     'latest': 'Latest repositories',
     'highest': 'Highest rated repositories',
     'lowest': 'Lowest rated repositorires'
-  }
+  };
   return (
     <View
       style={styles.select}
@@ -69,11 +69,11 @@ const RepositoryOrderSelection = ({ sortMode, setSortMode }) => {
         value={sortMode}
       />
     </View>
-  )
-}
+  );
+};
 
 const RepositoryList = () => {
-  const [sortMode, setSortMode] = useState(null)
+  const [sortMode, setSortMode] = useState(null);
   const { repositories, fetchMore } = useRepositories(sortMode, 8);
   const onEndReach = () => {
     fetchMore();
